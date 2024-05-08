@@ -1,6 +1,12 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
+  "include": [
+    "env.d.ts",
+    "src/**/*",
+    "src/**/*.vue",
+    "auto-imports.d.ts",
+    "components.d.ts"
+  ],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "composite": true,
@@ -10,6 +16,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
+    // "types": ["element-plus/global"], 全局引入时配置该项，elementui组件的类型就有了
     "noImplicitAny": false
   }
 }
