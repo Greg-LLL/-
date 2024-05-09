@@ -5,9 +5,4 @@ const hyRequest = new HYRequest({
   timeout: TIME_OUT
 })
 
-export const hyRequest2 = new HYRequest({
-  baseURL: 'http://baidu.com',
-  timeout: 8000
-})
-
 export default hyRequest

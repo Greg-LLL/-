@@ -4,6 +4,7 @@ import './assets/css/index.less'
 import App from './App.vue'
 import router from './router'
 import pinia from './store'
+import registerIcons from '@/global/register-icons'
 
 /* 本项目按需导入,需要在tsconfig.app.json的include里
 添加 "auto-imports.d.ts","components.d.ts",才会有elementui组件的类型
@@ -13,8 +14,13 @@ import pinia from './store'
 // import ElementPlus from 'element-plus'
 // import 'element-plus/dist/index.css'
 // createApp(App).use(router).mount('#app')
+
+// 针对ElMessage和elLoading等组件引入样式,新版element按需引入，安装插件后，无需这样
+// import 'element-plus/theme-chalk/el-message.css'
+
 const app = createApp(App)
 app.use(router)
+app.use(registerIcons)
 // app.use(ElementPlus)
 app.use(pinia)
 app.mount('#app')
