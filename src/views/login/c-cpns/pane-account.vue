@@ -20,11 +20,11 @@
 <script lang="ts" setup>
 import type { FormRules, ElForm } from 'element-plus'
 import { reactive, ref } from 'vue'
-import { accountLoginRequest } from '@/service/login/login'
 import useLoginStore from '@/store/login/login'
+import type { IAccount } from '../../../types'
 
 // 定义account数据
-const account = reactive({
+const account = reactive<IAccount>({
   name: '',
   password: ''
 })
