@@ -3,7 +3,12 @@
     <!-- 顶部标题 -->
     <h1 class="title">后台管理系统</h1>
     <!-- 中间的tabs -->
-    <el-tabs type="border-card" stretch v-model="activeName">
+    <el-tabs
+      type="border-card"
+      stretch
+      v-model="activeName"
+      @keyup.enter="handleLoginBtnClick"
+    >
       <!-- 账号登录 -->
       <el-tab-pane name="account">
         <template #label>

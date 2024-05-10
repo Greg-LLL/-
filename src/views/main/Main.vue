@@ -1,26 +1,20 @@
 <template>
   <div class="main">
-    <h2>main:{{ counterStore.count }}</h2>
-    <h2>main:{{ counterStore.doubleCounter }}</h2>
-    <h2>main:{{ counterStore.age }}</h2>
-    <button @click="counterStore.changeCounterAction(20)">修改count</button>
-    <button @click="counterStore.$patch({ count: 500, age: 18 })">
-      批量修改
-    </button>
-    <div class="mb-4">
-      <el-button>Default</el-button>
-      <el-button type="primary">Primary</el-button>
-      <el-button type="success">Success</el-button>
-      <el-button type="info">Info</el-button>
-      <el-button type="warning">Warning</el-button>
-      <el-button type="danger">Danger</el-button>
-    </div>
+    <h2>main</h2>
+    <button @click="handleExitClick">退出登录</button>
   </div>
 </template>
 
 <script lang="ts" setup>
-import useCounterStore from '@/store/counter'
-const counterStore = useCounterStore()
+import { useRouter } from 'vue-router'
+import { localCache } from '@/utils/cache'
+// 退出登录
+const router = useRouter()
+function handleExitClick() {
+  // 删除token，跳回登录页面
+  localCache.clear()
+  router.push('/login')
+}
 </script>
 
 <style lang="less" scoped>
