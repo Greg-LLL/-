@@ -6,7 +6,7 @@
       </el-form-item>
       <el-form-item label="验证码" size="large" class="phoneNumberBox">
         <el-input />
-        <el-button class="phoneNumber">获取验证码</el-button>
+        <el-button class="phoneNumber" type="primary">获取验证码</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -18,12 +18,15 @@
 .pane-phone {
   .phoneNumberBox {
     position: relative;
+    .el-input {
+      width: 140px;
+    }
     .phoneNumber {
       position: absolute;
       top: 0;
       right: 0;
       width: 90px;
-      border-radius: 0 0 0 15px;
+      border-radius: 5px;
     }
   }
 }

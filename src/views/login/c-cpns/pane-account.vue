@@ -55,7 +55,6 @@ function loginAction(isRemPwd: boolean) {
       // 获取用户的账号密码
       const name = account.name
       const password = account.password
-
       // 发送请求（携带账号密码）
       loginStore.loginAccountAction({ name, password }).then((res) => {
         // 判断是否需要记住密码
