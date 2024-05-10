@@ -22,11 +22,15 @@ import type { FormRules, ElForm } from 'element-plus'
 import { reactive, ref } from 'vue'
 import useLoginStore from '@/store/login/login'
 import type { IAccount } from '../../../types'
+import { localCache } from '@/utils/cache'
+
+const CACHE_NAME = 'name'
+const CACHE_PASSWORD = 'password'
 
 // 定义account数据
 const account = reactive<IAccount>({
-  name: '',
-  password: ''
+  name: localCache.getCache(CACHE_NAME) ?? '',
+  password: localCache.getCache(CACHE_PASSWORD) ?? ''
 })
 
 const formRef = ref<InstanceType<typeof ElForm>>()
@@ -45,7 +49,7 @@ const accountRules: FormRules = {
 
 // 登录逻辑
 const loginStore = useLoginStore()
-function loginAction() {
+function loginAction(isRemPwd: boolean) {
   formRef.value?.validate((vaild) => {
     if (vaild) {
       // 获取用户的账号密码
@@ -53,7 +57,16 @@ function loginAction() {
       const password = account.password
 
       // 发送请求（携带账号密码）
-      loginStore.loginAccountAction({ name, password })
+      loginStore.loginAccountAction({ name, password }).then((res) => {
+        // 判断是否需要记住密码
+        if (isRemPwd) {
+          localCache.setCache(CACHE_NAME, name)
+          localCache.setCache(CACHE_PASSWORD, password)
+        } else {
+          localCache.deleteCache(CACHE_NAME)
+          localCache.deleteCache(CACHE_PASSWORD)
+        }
+      })
     } else {
       ElMessage.error('账号或密码格式错误')
     }
