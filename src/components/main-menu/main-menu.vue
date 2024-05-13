@@ -3,11 +3,12 @@
     <div class="logo">
       <!-- logo -->
       <img class="img" src="@/assets/img/logo.svg" alt="11" title="22233" />
-      <h2 class="title">管理系统</h2>
+      <h2 class="title" v-show="!isFold">管理系统</h2>
     </div>
     <!-- menu -->
     <div class="menu">
       <el-menu
+        :collapse="isFold"
         default-active="1"
         text-color="#b7bdc3"
         active-text-color="#fff"
@@ -77,6 +78,16 @@
 
 <script lang="ts" setup>
 import useLoginStore from '@/store/login/login'
+
+// 定义props
+defineProps({
+  isFold: {
+    type: Boolean,
+    default: false
+  }
+})
+
+// 获取动态的菜单
 const loginStore = useLoginStore()
 const userMenus = loginStore.userMenus
 console.log(userMenus)

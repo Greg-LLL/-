@@ -1,12 +1,12 @@
 <template>
   <div class="main">
     <el-container class="main-content">
-      <el-aside width="210px">
-        <main-menu></main-menu>
+      <el-aside :width="isFold ? '60px' : '210px'">
+        <main-menu :is-fold="isFold"></main-menu>
       </el-aside>
       <el-container>
         <el-header height="50px">
-          <main-header></main-header>
+          <main-header @fold-change="handleFoldChange"></main-header>
         </el-header>
         <el-main>Main</el-main>
       </el-container>
@@ -14,7 +14,14 @@
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { ref } from 'vue'
+// 处理main-header中折叠的变化
+const isFold = ref(false)
+function handleFoldChange(flag: boolean) {
+  isFold.value = flag
+}
+</script>
 
 <style lang="less" scoped>
 .main {
@@ -33,6 +40,7 @@
     background-color: #001529;
     scrollbar-width: none; /* firefox */
     -ms-overflow-style: none; /* IE 10+ */
+    transition: width 0.3s ease;
 
     &::-webkit-scrollbar {
       display: none;
