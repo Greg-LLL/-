@@ -11,16 +11,16 @@ import { LOGIN_TOKEN } from '@/global/constants'
 
 interface ILoginState {
   token: string
-  userInfo: any
-  userMenus: any
+  userInfo: any // 用户信息
+  userMenus: any // 用户权限菜单
 }
 
 const useLoginStore = defineStore('login', {
   // 如何指定state的类型
   state: (): ILoginState => ({
     token: localCache.getCache(LOGIN_TOKEN) ?? '',
-    userInfo: {},
-    userMenus: []
+    userInfo: localCache.getCache('userInfo') ?? {},
+    userMenus: localCache.getCache('userMenus') ?? []
   }),
   actions: {
     async loginAccountAction(account: IAccount) {
@@ -28,18 +28,24 @@ const useLoginStore = defineStore('login', {
       const loginResult = await accountLoginRequest(account)
       const id = loginResult.data.id
       this.token = loginResult.data.token
-
       // 进行本地缓存
       localCache.setCache(LOGIN_TOKEN, this.token)
 
       // 获取登录用户的详细信息(role信息)
       const userInfoResult = await getUserInfoById(id)
-      this.userInfo = userInfoResult.data
+      // 这一步是为了本地存储的时候，避免存储的是响应性的数据，state会将数据变为响应式
+      const userInfo = userInfoResult.data
+      this.userInfo = userInfo
 
       // 根据角色信息请求用户权限（菜单menus）
-
       const userMenusResult = await getUserMenusByRoleId(this.userInfo.role.id)
-      this.userMenus = userMenusResult.data
+      // 这一步是为了本地存储的时候，避免存储的是响应性的数据，state会将数据变为响应式
+      const userMenus = userMenusResult.data
+      this.userMenus = userMenus
+
+      // 进行本地缓存
+      localCache.setCache('userInfo', userInfo)
+      localCache.setCache('userMenus', userMenus)
 
       // 页面跳转
       router.push('/main')
