@@ -3,7 +3,7 @@ import 'normalize.css'
 import './assets/css/index.less'
 import App from './App.vue'
 import router from './router'
-import pinia from './store'
+import store from './store'
 import registerIcons from '@/global/register-icons'
 
 /* 本项目按需导入,需要在tsconfig.app.json的include里
@@ -19,8 +19,14 @@ import registerIcons from '@/global/register-icons'
 // import 'element-plus/theme-chalk/el-message.css'
 
 const app = createApp(App)
-app.use(router)
 app.use(registerIcons)
 // app.use(ElementPlus)
-app.use(pinia)
+
+// 处理刷新时，数据丢失，useRouter必须在这三段代码后面
+// app.use(pinia)
+// const loginStore = useLoginStore()
+// loginStore.loadLocalCacheAction()
+
+app.use(store)
+app.use(router)
 app.mount('#app')

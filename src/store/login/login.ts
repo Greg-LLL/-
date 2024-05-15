@@ -8,6 +8,8 @@ import type { IAccount } from '@/types'
 import { localCache } from '@/utils/cache'
 import router from '@/router'
 import { LOGIN_TOKEN } from '@/global/constants'
+import type { RouteRecordRaw } from 'vue-router'
+import { mapMenusToRoutes } from '@/utils/map-menus'
 
 interface ILoginState {
   token: string
@@ -18,9 +20,9 @@ interface ILoginState {
 const useLoginStore = defineStore('login', {
   // 如何指定state的类型
   state: (): ILoginState => ({
-    token: localCache.getCache(LOGIN_TOKEN) ?? '',
-    userInfo: localCache.getCache('userInfo') ?? {},
-    userMenus: localCache.getCache('userMenus') ?? []
+    token: '',
+    userInfo: {},
+    userMenus: []
   }),
   actions: {
     async loginAccountAction(account: IAccount) {
@@ -47,8 +49,49 @@ const useLoginStore = defineStore('login', {
       localCache.setCache('userInfo', userInfo)
       localCache.setCache('userMenus', userMenus)
 
+      // // 动态获取所有的路由对象
+      // const localRoutes: RouteRecordRaw[] = []
+      // // 读取router/main当中所有的ts文件
+      // const files: Record<string, any> = import.meta.glob(
+      //   '../../router/main/**/*.ts',
+      //   {
+      //     eager: true
+      //   }
+      // )
+      // // 将加载的对象放到localRoutes里面
+      // for (const key in files) {
+      //   const module = files[key]
+      //   localRoutes.push(module.default)
+      // }
+
+      // // 根据菜单去匹配正确的路由
+      // for (const menu of userMenus) {
+      //   for (const submenu of menu.children) {
+      //     const route = localRoutes.find((item) => item.path === submenu.url)
+      //     if (route) router.addRoute('main', route)
+      //   }
+      // }
+
+      // 重要：动态的添加路由
+      const routes = mapMenusToRoutes(userMenus)
+      routes.forEach((route) => router.addRoute('main', route))
+
       // 页面跳转
       router.push('/main')
+    },
+    loadLocalCacheAction() {
+      const token = localCache.getCache(LOGIN_TOKEN)
+      const userInfo = localCache.getCache('userInfo')
+      const userMenus = localCache.getCache('userMenus')
+      if (token && userInfo && userMenus) {
+        this.token = token
+        this.userInfo = userInfo
+        this.userMenus = userMenus
+
+        // 动态添加路由
+        const routes = mapMenusToRoutes(userMenus)
+        routes.forEach((route) => router.addRoute('main', route))
+      }
     }
   }
 })

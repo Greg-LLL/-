@@ -16,6 +16,7 @@ const router = createRouter({
     },
     {
       path: '/main',
+      name: 'main',
       component: () => import('../views/main/main.vue')
     },
     {
@@ -24,6 +25,8 @@ const router = createRouter({
     }
   ]
 })
+
+// 动态添加路由
 
 // 导航守卫
 // 参数：to(跳转到的位置)/from(从哪里跳转过来)

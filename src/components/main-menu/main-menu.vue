@@ -26,7 +26,10 @@
             </template>
 
             <template v-for="subitem in item.children" :key="subitem.id">
-              <el-menu-item :index="subitem.id + ''">
+              <el-menu-item
+                :index="subitem.id + ''"
+                @click="handleItemClick(subitem)"
+              >
                 {{ subitem.name }}</el-menu-item
               >
             </template>
@@ -78,6 +81,7 @@
 
 <script lang="ts" setup>
 import useLoginStore from '@/store/login/login'
+import { useRouter } from 'vue-router'
 
 // 定义props
 defineProps({
@@ -90,7 +94,13 @@ defineProps({
 // 获取动态的菜单
 const loginStore = useLoginStore()
 const userMenus = loginStore.userMenus
-console.log(userMenus)
+
+// 监听item点击 =>跳转路由
+const router = useRouter()
+function handleItemClick(item) {
+  const url = item.url
+  router.push(url)
+}
 </script>
 
 <style lang="less" scoped>
