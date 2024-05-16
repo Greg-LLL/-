@@ -34,7 +34,14 @@ export function mapMenusToRoutes(userMenus: any[]) {
   for (const menu of userMenus) {
     for (const submenu of menu.children) {
       const route = localRoutes.find((item) => item.path === submenu.url)
-      if (route) routes.push(route)
+      if (route) {
+        // 1.给route的顶层菜单增加重定向功能（但是只需要添加一次即可）
+        if (!routes.find((item) => item.path === menu.url)) {
+          routes.push({ path: menu.url, redirect: route.path })
+        }
+        // 2.二级菜单加到路由里面
+        routes.push(route)
+      }
       // 记录第一个被匹配到的菜单
       if (!firstMenu && route) firstMenu = submenu
     }
@@ -46,7 +53,7 @@ export function mapMenusToRoutes(userMenus: any[]) {
 // 根据路径去匹配需要显示的菜单
 // path：需要匹配的路径
 // userMenus：所有的菜单
-export default function mapPathToMenu(path: string, userMenus: any[]) {
+export function mapPathToMenu(path: string, userMenus: any[]) {
   for (const menu of userMenus) {
     for (const submenu of menu.children) {
       if (submenu.url === path) {
@@ -54,4 +61,23 @@ export default function mapPathToMenu(path: string, userMenus: any[]) {
       }
     }
   }
+}
+
+export function mapPathToBreadcrumbs(path: string, userMenus: any[]) {
+  // 定义面包屑
+  const breadcrumbs: any[] = []
+  // 遍历获取面包屑层级
+  for (const menu of userMenus) {
+    for (const submenu of menu.children) {
+      if (submenu.url === path) {
+        // 1.顶层菜单
+        breadcrumbs.push({ name: menu.name, path: menu.url })
+        // 2.匹配菜单
+        breadcrumbs.push({ name: submenu.name, path: submenu.url })
+      }
+    }
+  }
+  console.log(breadcrumbs)
+
+  return breadcrumbs
 }
