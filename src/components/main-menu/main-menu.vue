@@ -9,7 +9,7 @@
     <div class="menu">
       <el-menu
         :collapse="isFold"
-        default-active="1"
+        :default-active="defalutActive"
         text-color="#b7bdc3"
         active-text-color="#fff"
         background-color="#001529"
@@ -81,7 +81,9 @@
 
 <script lang="ts" setup>
 import useLoginStore from '@/store/login/login'
-import { useRouter } from 'vue-router'
+import { ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import mapPathToMenu, { firstMenu } from '@/utils/map-menus'
 
 // 定义props
 defineProps({
@@ -101,6 +103,11 @@ function handleItemClick(item) {
   const url = item.url
   router.push(url)
 }
+
+// el-menu的默认菜单
+const route = useRoute()
+const pathMenu = mapPathToMenu(route.path, userMenus)
+const defalutActive = ref(pathMenu.id + '')
 </script>
 
 <style lang="less" scoped>

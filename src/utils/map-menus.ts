@@ -13,6 +13,7 @@ function loadLocalRoutes() {
       eager: true
     }
   )
+
   // 将加载的对象放到localRoutes里面
   for (const key in files) {
     const module = files[key]
@@ -21,17 +22,36 @@ function loadLocalRoutes() {
   return localRoutes
 }
 
+// 第一个菜单路由
+export let firstMenu: any = null
+
 export function mapMenusToRoutes(userMenus: any[]) {
-  // 加载本地路由
+  // 加载本地路由=>完整的路由
   const localRoutes = loadLocalRoutes()
 
-  // 根据菜单去匹配正确的路由
+  // 根据菜单去匹配正确的路由，将用户的权限和完整路由对比，筛选出用户正确的路由
   const routes: RouteRecordRaw[] = []
   for (const menu of userMenus) {
     for (const submenu of menu.children) {
       const route = localRoutes.find((item) => item.path === submenu.url)
       if (route) routes.push(route)
+      // 记录第一个被匹配到的菜单
+      if (!firstMenu && route) firstMenu = submenu
     }
   }
+
   return routes
+}
+
+// 根据路径去匹配需要显示的菜单
+// path：需要匹配的路径
+// userMenus：所有的菜单
+export default function mapPathToMenu(path: string, userMenus: any[]) {
+  for (const menu of userMenus) {
+    for (const submenu of menu.children) {
+      if (submenu.url === path) {
+        return submenu
+      }
+    }
+  }
 }
