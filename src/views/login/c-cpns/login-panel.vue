@@ -54,7 +54,6 @@ import { localCache } from '@/utils/cache'
 const activeName = ref('account')
 const isRemPwd = ref<boolean>(localCache.getCache('isRemPwd') ?? false)
 watch(isRemPwd, (newValue) => {
-  console.log(newValue)
   localCache.setCache('isRemPwd', newValue)
 })
 

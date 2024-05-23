@@ -5,6 +5,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import registerIcons from '@/global/register-icons'
+// 处理谷歌浏览器滚动条警告
+import 'default-passive-events'
 
 /* 本项目按需导入,需要在tsconfig.app.json的include里
 添加 "auto-imports.d.ts","components.d.ts",才会有elementui组件的类型

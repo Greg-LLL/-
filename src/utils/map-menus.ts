@@ -77,7 +77,5 @@ export function mapPathToBreadcrumbs(path: string, userMenus: any[]) {
       }
     }
   }
-  console.log(breadcrumbs)
-
   return breadcrumbs
 }

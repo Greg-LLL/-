@@ -9,6 +9,7 @@ import { localCache } from '@/utils/cache'
 import router from '@/router'
 import { LOGIN_TOKEN } from '@/global/constants'
 import { mapMenusToRoutes } from '@/utils/map-menus'
+import useMainStore from '@/store/main/main'
 
 interface ILoginState {
   token: string
@@ -48,6 +49,10 @@ const useLoginStore = defineStore('login', {
       localCache.setCache('userInfo', userInfo)
       localCache.setCache('userMenus', userMenus)
 
+      // 请求所有的role/department数据
+      const mainStore = useMainStore()
+      mainStore.fetchEntireDataAction()
+
       // 动态获取所有的路由对象
       // const localRoutes: RouteRecordRaw[] = []
       // // 读取router/main当中所有的ts文件
@@ -86,6 +91,10 @@ const useLoginStore = defineStore('login', {
         this.token = token
         this.userInfo = userInfo
         this.userMenus = userMenus
+
+        // 请求所有的role/department数据
+        const mainStore = useMainStore()
+        mainStore.fetchEntireDataAction()
 
         // 动态添加路由=>解决页面刷新，数据丢失
         const routes = mapMenusToRoutes(userMenus)
