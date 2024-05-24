@@ -1,7 +1,6 @@
 <template>
   <div class="department">
     <pageSerach
-      :search-config="searchConfig"
       @query-click="handleQueryClick"
       @reset-click="handleResetClick"
     />
@@ -15,12 +14,10 @@
 </template>
 
 <script setup lang="ts" name="department">
-import pageSerach from '@/components/page-search/page-search.vue'
+import pageSerach from './c-cpns/page-search.vue'
 import pageContent from './c-cpns/page-content.vue'
 import pageModal from './c-cpns/page-modal.vue'
 import { ref } from 'vue'
-
-import searchConfig from './config/search.config'
 
 // 点击search，content的操作
 const contentRef = ref<InstanceType<typeof pageContent>>()
