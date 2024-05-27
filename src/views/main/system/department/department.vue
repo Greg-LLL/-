@@ -17,18 +17,19 @@
         </span>
       </template>
     </pageContent>
-    <pageModal ref="modelRef" />
+    <pageModal ref="modelRef" :modal-config="modalConfig" />
   </div>
 </template>
 
 <script setup lang="ts" name="department">
 import pageSerach from '@/components/page-search/page-search.vue'
 import pageContent from '@/components/page-content/page-content.vue'
-import pageModal from './c-cpns/page-modal.vue'
+import pageModal from '@/components/page-modal/page-modal.vue'
 import { ref } from 'vue'
 
 import searchConfig from './config/search.config'
 import contentConfig from './config/content.config'
+import modalConfig from './config/modal.config'
 // 点击search，content的操作
 const contentRef = ref<InstanceType<typeof pageContent>>()
 function handleQueryClick(queryInfo: any) {
