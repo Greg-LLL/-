@@ -6,22 +6,29 @@
       @reset-click="handleResetClick"
     />
     <pageContent
+      :content-config="contentConfig"
       ref="contentRef"
       @new-click="handleNewClick"
       @edit-click="handleEditClick"
-    />
+    >
+      <template #leader="scope">
+        <span class="leader">
+          {{ scope.row[scope.prop] }}
+        </span>
+      </template>
+    </pageContent>
     <pageModal ref="modelRef" />
   </div>
 </template>
 
 <script setup lang="ts" name="department">
 import pageSerach from '@/components/page-search/page-search.vue'
-import pageContent from './c-cpns/page-content.vue'
+import pageContent from '@/components/page-content/page-content.vue'
 import pageModal from './c-cpns/page-modal.vue'
 import { ref } from 'vue'
 
 import searchConfig from './config/search.config'
-
+import contentConfig from './config/content.config'
 // 点击search，content的操作
 const contentRef = ref<InstanceType<typeof pageContent>>()
 function handleQueryClick(queryInfo: any) {
@@ -46,5 +53,8 @@ function handleEditClick(itemData: any) {
 
 <style scoped>
 .department {
+  .leader {
+    color: red;
+  }
 }
 </style>
