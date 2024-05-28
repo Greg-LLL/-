@@ -64,6 +64,7 @@ import { reactive, ref } from 'vue'
 // 定义props
 interface IProps {
   modalConfig: {
+    pageName: string
     header: {
       newTitle: string
       editTitle: string
@@ -104,17 +105,19 @@ function setModalVisible(isNew: boolean = true, itemData?: any) {
 }
 
 // 获取role和department数据
-const mainStore = useMainStore()
-const { entireDepartments } = storeToRefs(mainStore)
 
 // 确定按钮
 const systemStore = useSystemStore()
 function hanleConfirm() {
   dailogVisible.value = false
   if (!isNewRef.value && editData.value) {
-    systemStore.editPageDataAction('department', editData.value.id, formData)
+    systemStore.editPageDataAction(
+      props.modalConfig.pageName,
+      editData.value.id,
+      formData
+    )
   } else {
-    systemStore.newPageDataAction('department', formData)
+    systemStore.newPageDataAction(props.modalConfig.pageName, formData)
   }
 }
 
