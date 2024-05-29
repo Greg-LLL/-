@@ -2,13 +2,18 @@
   <div class="content">
     <div class="hearder">
       <h3 class="title">{{ contentConfig.header?.title ?? '数据列表' }}</h3>
-      <el-button type="primary" @click="handleNewUserClick">
+      <el-button v-if="isCreate" type="primary" @click="handleNewUserClick">
         {{ contentConfig.header?.btnTitle ?? '新建数据' }}
       </el-button>
     </div>
 
     <div class="table">
-      <el-table :data="pageList" border style="width: 100%">
+      <el-table
+        :data="pageList"
+        border
+        style="width: 100%"
+        v-bind="contentConfig.childrenTree"
+      >
         <template v-for="item in contentConfig.propList" :key="item.prop">
           <template v-if="item.type === 'timer'">
             <el-table-column v-bind="item">
@@ -28,6 +33,7 @@
             <el-table-column v-bind="item" align="center">
               <template #default="scope">
                 <el-button
+                  v-if="isUpdate"
                   size="small"
                   type="primary"
                   text
@@ -36,6 +42,7 @@
                   >编辑</el-button
                 >
                 <el-button
+                  v-if="isDelete"
                   size="small"
                   type="danger"
                   text
@@ -83,6 +90,7 @@ import useSystemStore from '@/store/main/system/system'
 import { storeToRefs } from 'pinia'
 import { formatUTC } from '@/utils/format'
 import { ref } from 'vue'
+import usePermissions from '@/hooks/usePermissions'
 
 interface IProps {
   contentConfig: {
@@ -92,6 +100,7 @@ interface IProps {
       btnTitle?: string
     }
     propList: any[]
+    childrenTree?: any
   }
 }
 
@@ -99,6 +108,14 @@ const props = defineProps<IProps>()
 
 // 自定义事件
 const emit = defineEmits(['newClick', 'editClick'])
+
+// 获取是否有对应的增删改查的权限
+// const loginStore = useLoginStore()
+// const { permissions } = loginStore
+const isCreate = usePermissions(`${props.contentConfig.pageName}:create`)
+const isDelete = usePermissions(`${props.contentConfig.pageName}:delete`)
+const isUpdate = usePermissions(`${props.contentConfig.pageName}:update`)
+const isQuery = usePermissions(`${props.contentConfig.pageName}:query`)
 
 // 发起cation，获取userList的数据
 const systemStore = useSystemStore()
@@ -124,6 +141,7 @@ function handleCurrentChange() {
 
 // 定义函数，用于发送网络请求
 function fetchPageListData(formData: any = {}) {
+  if (!isQuery) return
   // 1.获取offset/size
   const size = pageSize.value
   const offset = (currentPage.value - 1) * size

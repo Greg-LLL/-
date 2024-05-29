@@ -41,6 +41,9 @@
                   </template>
                 </el-select>
               </template>
+              <template v-if="item.type === 'custom'">
+                <slot :name="item.slotName"></slot>
+              </template>
             </el-form-item>
           </template>
         </el-form>
@@ -71,6 +74,7 @@ interface IProps {
     }
     formItems: any[]
   }
+  otherInfo?: any
 }
 const props = defineProps<IProps>()
 
@@ -97,6 +101,7 @@ function setModalVisible(isNew: boolean = true, itemData?: any) {
     editData.value = itemData
   } else {
     // 新建数据
+
     for (const key in formData) {
       formData[key] = ''
     }
@@ -110,14 +115,18 @@ function setModalVisible(isNew: boolean = true, itemData?: any) {
 const systemStore = useSystemStore()
 function hanleConfirm() {
   dailogVisible.value = false
+  let infoData = { ...formData }
+  if (props.otherInfo) {
+    infoData = { ...formData, ...props.otherInfo }
+  }
   if (!isNewRef.value && editData.value) {
     systemStore.editPageDataAction(
       props.modalConfig.pageName,
       editData.value.id,
-      formData
+      infoData
     )
   } else {
-    systemStore.newPageDataAction(props.modalConfig.pageName, formData)
+    systemStore.newPageDataAction(props.modalConfig.pageName, infoData)
   }
 }
 

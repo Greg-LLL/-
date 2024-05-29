@@ -9,6 +9,7 @@ import {
   editPageData
 } from '@/service/main/system/system'
 import { defineStore } from 'pinia'
+import useMainStore from '../main'
 
 interface ISystemState {
   usersList: any[]
@@ -80,10 +81,17 @@ const useSystemStore = defineStore('system', {
     async newPageDataAction(pageName: string, pageInfo: any) {
       const pageResult = await newPageData(pageName, pageInfo)
       this.postPageListAction(pageName, { offset: 0, size: 10 })
+
+      // 获取完整的数据
+      const mainStore = useMainStore()
+      mainStore.fetchEntireDataAction()
     },
     async editPageDataAction(pageName: string, id: number, pageInfo: any) {
       const editPageResult = await editPageData(pageName, id, pageInfo)
       this.postPageListAction(pageName, { offset: 0, size: 10 })
+      // 获取完整的数据
+      const mainStore = useMainStore()
+      mainStore.fetchEntireDataAction()
     }
   }
 })

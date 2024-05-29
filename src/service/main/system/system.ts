@@ -60,3 +60,9 @@ export function editPageData(pageName: string, id: number, userInfo: any) {
     data: userInfo
   })
 }
+
+export function getEntireMenus() {
+  return hyRequest.post({
+    url: '/menu/list'
+  })
+}
