@@ -2,7 +2,9 @@
   <div class="content">
     <div class="hearder">
       <h3 class="title">用户列表</h3>
-      <el-button type="primary" @click="handleNewUserClick">新建数据</el-button>
+      <el-button type="primary" v-if="isCreate" @click="handleNewUserClick"
+        >新建数据</el-button
+      >
     </div>
 
     <div class="table">
@@ -61,6 +63,7 @@
         <el-table-column label="操作" width="150px" align="center">
           <template #default="scope">
             <el-button
+              v-if="isUpdate"
               size="small"
               type="primary"
               text
@@ -69,6 +72,7 @@
               >编辑</el-button
             >
             <el-button
+              v-if="isDelete"
               size="small"
               type="danger"
               text
@@ -100,9 +104,16 @@ import useSystemStore from '@/store/main/system/system'
 import { storeToRefs } from 'pinia'
 import { formatUTC } from '@/utils/format'
 import { ref } from 'vue'
+import usePermissions from '@/hooks/usePermissions'
 
 // 自定义事件
 const emit = defineEmits(['newClick', 'editClick'])
+
+// 用戶按钮权限
+const isCreate = usePermissions('users:create')
+const isDelete = usePermissions('users:delete')
+const isUpdate = usePermissions('users:update')
+const isQuery = usePermissions('users:query')
 
 // 发起cation，获取userList的数据
 const systemStore = useSystemStore()
@@ -128,6 +139,7 @@ function handleCurrentChange() {
 
 // 定义函数，用于发送网络请求
 function fetchUserListData(formData: any = {}) {
+  if (!isQuery) return
   // 1.获取offset/size
   const size = pageSize.value
   const offset = (currentPage.value - 1) * size

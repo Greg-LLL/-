@@ -48,7 +48,10 @@ import { mapMenuListToIdS } from '@/utils/map-menus'
 
 // 弹窗逻辑关系
 const { contentRef, handleQueryClick, handleResetClick } = usePageContent()
-const { modelRef, handleEditClick, handleNewClick } = usePageModal(editCallback)
+const { modelRef, handleEditClick, handleNewClick } = usePageModal(
+  newCallback,
+  editCallback
+)
 
 // 获取完整的菜单，弹窗使用
 const mainStore = useMainStore()
@@ -58,6 +61,12 @@ const treeRef = ref<InstanceType<typeof ElTree>>()
 function handleElTreeCheck(data1, data2) {
   const menuList = [...data2.checkedKeys, ...data2.halfCheckedKeys]
   otherInfo.value = { menuList }
+}
+
+function newCallback() {
+  nextTick(() => {
+    treeRef.value?.setCheckedKeys([])
+  })
 }
 
 function editCallback(itemData: any) {

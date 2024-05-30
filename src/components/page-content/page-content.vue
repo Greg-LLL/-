@@ -167,6 +167,19 @@ function hanleEditBtnClick(itemData: any) {
   emit('editClick', itemData)
 }
 
+//  监听systemStore中的actions被执行
+systemStore.$onAction(({ name, after }) => {
+  after(() => {
+    if (
+      name === 'deletePageByIdAction' ||
+      name === 'editPageDataAction' ||
+      name === 'newPageDataAction'
+    ) {
+      currentPage.value = 1
+    }
+  })
+})
+
 // 暴露网络请求方法
 defineExpose({ fetchPageListData })
 </script>

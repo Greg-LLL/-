@@ -101,7 +101,6 @@ function setModalVisible(isNew: boolean = true, itemData?: any) {
     editData.value = itemData
   } else {
     // 新建数据
-
     for (const key in formData) {
       formData[key] = ''
     }
