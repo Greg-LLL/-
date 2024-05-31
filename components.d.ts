@@ -55,6 +55,7 @@ declare module 'vue' {
     PageModal: typeof import('./src/components/page-modal/page-modal.vue')['default']
     PageSearch: typeof import('./src/components/page-search/page-search.vue')['default']
     PieEchart: typeof import('./src/components/page-echarts/src/pie-echart.vue')['default']
+    RoseEchart: typeof import('./src/components/page-echarts/src/rose-echart.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

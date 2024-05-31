@@ -4,27 +4,42 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
+import { ref, onMounted, watchEffect } from 'vue'
 import * as echarts from 'echarts'
-import { ref, onMounted } from 'vue'
 import type { EChartsOption } from 'echarts'
 
 interface IProps {
   option: EChartsOption
 }
+
 const props = defineProps<IProps>()
+
 const echartRef = ref<HTMLElement>()
 onMounted(() => {
-  const echartInstance = echarts.init(echartRef.value, 'light', {
+  // 1.初始化echarts实例
+  const echartInstance = echarts.init(echartRef.value!, 'light', {
     renderer: 'canvas'
   })
-  echartInstance.setOption(props.option)
+
+  // 2.第一次进行setOption
+  // watchEffect监听option变化, 重新执行
+  watchEffect(() => echartInstance.setOption(props.option))
+
+  // 3.监听window缩放
+  window.addEventListener('resize', () => {
+    echartInstance.resize()
+  })
 })
+
+onMounted(() => {})
 </script>
 
 <style lang="less" scoped>
 .base-echart {
+  color: red;
 }
+
 .echart {
   height: 300px;
 }
