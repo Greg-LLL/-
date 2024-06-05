@@ -18,7 +18,7 @@
     "countup.js": "^2.8.0",
     "dayjs": "^1.11.11",
     "default-passive-events": "^2.0.0",
-    "echarts": "^5.5.0",
+    "echarts": "^5.4.0",
     "element-plus": "^2.7.2",
     "normalize.css": "^8.0.1",
     "pinia": "^2.1.7",

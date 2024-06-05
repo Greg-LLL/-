@@ -7,7 +7,9 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    BarEchart: typeof import('./src/components/page-echarts/src/bar-echart.vue')['default']
     BaseEchart: typeof import('./src/components/page-echarts/src/base-echart.vue')['default']
+    copy: typeof import('./src/components/page-echarts/src/line-echart copy.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
@@ -51,6 +53,7 @@ declare module 'vue' {
     LineEchart: typeof import('./src/components/page-echarts/src/line-echart.vue')['default']
     MainHeader: typeof import('./src/components/main-header/main-header.vue')['default']
     MainMenu: typeof import('./src/components/main-menu/main-menu.vue')['default']
+    MapEchart: typeof import('./src/components/page-echarts/src/map-echart.vue')['default']
     PageContent: typeof import('./src/components/page-content/page-content.vue')['default']
     PageModal: typeof import('./src/components/page-modal/page-modal.vue')['default']
     PageSearch: typeof import('./src/components/page-search/page-search.vue')['default']

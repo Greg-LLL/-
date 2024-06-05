@@ -23,7 +23,7 @@
       </el-col>
       <el-col :span="7">
         <chart-card>
-          <rose-echart :rose-data="showGoodsCategorySale" />
+          <rose-echart :rose-data="showGoodsCategoryCount" />
         </chart-card>
       </el-col>
     </el-row>
@@ -52,7 +52,13 @@ import ChartCard from './c-cpns/chart-card/chart-card.vue'
 import useAnalysisStore from '@/store/main/analysis/analysis'
 
 // import BaseChart from '@/components/page-echarts'
-import { PieEchart, LineEchart } from '@/components/page-echarts'
+import {
+  PieEchart,
+  LineEchart,
+  RoseEchart,
+  BarEchart,
+  MapEchart
+} from '@/components/page-echarts'
 
 // 1.发起数据的请求
 const analysisStore = useAnalysisStore()
@@ -76,10 +82,9 @@ const showGoodsCategoryCount = computed(() => {
 })
 
 const showGoodsCategorySale = computed(() => {
-  return goodsCategorySale.value.map((item) => ({
-    name: item.name,
-    value: item.goodsCount
-  }))
+  const labels = goodsCategorySale.value.map((item) => item.name)
+  const values = goodsCategorySale.value.map((item) => item.goodsCount)
+  return { labels, values }
 })
 const showGoodsCategoryFavor = computed(() => {
   const labels = goodsCategoryFavor.value.map((item) => item.name)
